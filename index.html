@@ -2,236 +2,178 @@
 <html lang="es">
 <head>
   <meta charset="utf-8" />
-  <title>Despachos ruta 700 </title>
-  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-  <meta name="theme-color" content="#0d6efd" />
-  <meta name="apple-mobile-web-app-capable" content="yes" />
-  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <title>Desdi despachos</title>
+
+  <!-- Responsive móvil + safe areas -->
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#0f172a">
+
+  <!-- PERFORMANCE HINTS: DNS + TCP + TLS warm-up -->
+  <link rel="dns-prefetch" href="https://script.google.com">
+  <link rel="dns-prefetch" href="https://script.googleusercontent.com">
+  <link rel="dns-prefetch" href="https://googleusercontent.com">
+  <link rel="dns-prefetch" href="https://ssl.gstatic.com">
+  <link rel="preconnect" href="https://script.google.com" crossorigin>
+  <link rel="preconnect" href="https://script.googleusercontent.com" crossorigin>
+  <link rel="preconnect" href="https://ssl.gstatic.com" crossorigin>
 
   <style>
-    :root{
-      --bg: linear-gradient(135deg,#eef2ff 0%,#f7f9ff 50%,#eef6ff 100%);
-      --brand:#0d6efd; --ink:#0b1022; --muted:#6b7280; --card:#ffffff;
-      --ring:#dbe4ff; --shadow: 0 12px 36px rgba(16,24,40,.12);
-      --scale: 1; /* zoom del contenido */
-      --safe-top: env(safe-area-inset-top);
-      --safe-bottom: env(safe-area-inset-bottom);
+    html,body { height: 100%; margin: 0; }
+    body {
+      display: flex; flex-direction: column;
+      min-height: 100svh; background: #0b1220; color: #e5e7eb;
+      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;
     }
-    *{ box-sizing:border-box; -webkit-tap-highlight-color:transparent }
-    html,body{ height:100%; margin:0; padding:0; }
-    body{
-      font-family: ui-sans-serif, system-ui, "Segoe UI", Roboto, Arial, "Helvetica Neue", sans-serif;
-      color: var(--ink);
-      background: var(--bg);
+    .appbar {
+      background:#0f172a; padding:10px 12px; display:flex; align-items:center; justify-content:space-between; gap:8px;
+      padding-left: calc(env(safe-area-inset-left, 0px) + 12px);
+      padding-right: calc(env(safe-area-inset-right, 0px) + 12px);
+      box-shadow: 0 2px 10px rgba(0,0,0,.25);
     }
+    .appbar h1 { font-size:16px; margin:0; font-weight:700; letter-spacing:.2px; }
+    .actions { display:flex; gap:6px; }
+    .btn {
+      border:1px solid #334155; background:#111827; color:#e5e7eb; padding:6px 10px; border-radius:10px;
+      font-size:12px; line-height:1; cursor:pointer;
+    }
+    .btn.secondary { background:transparent; border-color:#475569; color:#cbd5e1; }
+    .btn:hover { background:#0b1220; }
 
-    .app{
-      min-height: 100dvh;
-      display:flex; flex-direction:column;
-      padding: calc(8px + var(--safe-top)) 12px calc(8px + var(--safe-bottom));
-      gap:12px;
-    }
+    .main { position:relative; flex:1; min-height:0; overflow:hidden; }
+    .frame-wrap { position:absolute; inset:0; }
+    iframe { width:100%; height:100%; border:0; background:#fff; -webkit-overflow-scrolling:touch; }
 
-    .shell{
-      max-width: 1200px; width:100%; margin:0 auto;
-      background: var(--card);
-      border:1px solid var(--ring);
-      border-radius: 18px;
-      box-shadow: var(--shadow);
-      overflow: clip;
-      display:flex; flex-direction:column;
-      min-height: 70dvh;
+    .loader {
+      position:absolute; inset:0; display:grid; place-items:center;
+      background: radial-gradient(100% 100% at 0% 0%, rgba(4, 6, 17, 0.75), rgba(4,6,17,0.9) 70%), #040611;
+      z-index:2; transition: opacity .25s ease;
     }
+    .loader.hidden { opacity:0; pointer-events:none; }
+    .loadcard { display:flex; align-items:center; gap:10px; background:rgba(15,23,42,.6); border:1px solid #1f2937;
+      padding:12px 14px; border-radius:14px; backdrop-filter: blur(4px); box-shadow: 0 10px 30px rgba(0,0,0,.35);}
+    .spinner { width:42px; height:42px; border-radius:50%; border:4px solid #1f2937; border-top-color:#3b82f6; animation:spin .8s linear infinite; }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    .loadtext { font-size:14px; color:#cbd5e1; }
+    .progress { margin-top:6px; height:3px; width:160px; background:#1f2937; border-radius:99px; overflow:hidden; }
+    .bar { height:100%; width:0%; background:#3b82f6; transition: width .4s ease; }
 
-    .header{
-      display:flex; align-items:center; gap:10px;
-      padding:12px 14px;
-      border-bottom: 1px solid #eef2ff;
-      background: #fff;
-    }
-    .logo{
-      width:36px; height:36px; border-radius:10px;
-      background: radial-gradient(100% 100% at 0% 0%, #90c0ff 0%, #5e8cff 40%, #3b6eff 100%);
-      display:grid; place-items:center; color:#fff; font-weight:900;
-      box-shadow: inset 0 0 0 2px rgba(255,255,255,.6);
-    }
-    .title{ font-weight:800; font-size:18px; letter-spacing:.2px }
-    .actions{ margin-left:auto; display:flex; gap:8px; flex-wrap:wrap }
-    .btn{
-      border:1px solid #dde3ff; background:#f5f7ff; color:#1d2b6b;
-      padding:8px 12px; border-radius:10px; font-weight:800; cursor:pointer;
-    }
-    .btn.primary{ background:var(--brand); color:#fff; border-color:transparent }
-    .btn:active{ transform: translateY(1px) }
-    .sep{ width:1px; height:28px; background:#e9ecff; }
+    .help { position:absolute; left:50%; transform:translateX(-50%); bottom:12px; font-size:12px; color:#cbd5e1; text-align:center; opacity:.9; }
+    .help a { color:#93c5fd; text-decoration:underline; }
 
-    /* Marco del iframe + zoom */
-    .frame-viewport{
-      position:relative; flex:1 1 auto; background:#f8faff;
-      /* altura exacta: el JS ajusta si hiciera falta */
-      min-height: 60dvh;
-    }
-    .frame-scale{
-      position:absolute; inset:0;
-      transform: scale(var(--scale));
-      transform-origin: top center;
-      width: calc(100% / var(--scale));
-      height: calc(100% / var(--scale));
-      display:flex;
-    }
-    iframe{
-      border:0; width:100%; height:100%;
-      background:#fff;
-    }
-
-    .footer{
-      padding:10px 14px; font-size:12px; color:var(--muted);
-      border-top:1px solid #eef2ff; background:#fff;
-      display:flex; justify-content:space-between; gap:8px; flex-wrap:wrap;
-    }
-
-    /* Topbar fuera de la tarjeta (opcional) */
-    .topbar{
-      max-width:1200px; width:100%; margin:0 auto;
-      display:flex; gap:12px; align-items:center; justify-content:space-between;
-      color:#1d2b6b;
-    }
-    .topbar h1{ margin:0; font-size:22px; font-weight:900; letter-spacing:.3px }
-    .zoom-ind{ font-weight:800; background:#eef2ff; padding:4px 8px; border-radius:8px; }
-
-    @media (max-width:740px){
-      .header{ padding:10px 10px }
-      .btn{ padding:8px 10px }
-      .title{ font-size:16px }
-      .topbar h1{ font-size:18px }
-    }
+    @media (max-width:380px){ .appbar h1{font-size:14px} .btn{font-size:11px; padding:6px 8px} .loadtext{font-size:13px} }
   </style>
 </head>
 <body>
+  <header class="appbar">
+    <h1>📋 Planilla RUTA 700</h1>
+    <div class="actions">
+      <button class="btn" id="btnReload">Recargar</button>
+      <a class="btn secondary" id="btnOpen" target="_blank" rel="noopener">Abrir en pestaña</a>
+    </div>
+  </header>
 
-  <!-- Barra superior del shell -->
-  <div class="topbar">
-    <h1>Panel de Despachos</h1>
-    <div class="zoom-ind">Zoom: <span id="zoomLabel">100%</span></div>
-  </div>
-
-  <div class="shell">
-    <div class="header">
-      <div class="logo">D</div>
-      <div class="title">Despachos DESDI</div>
-      <div class="actions">
-        <button class="btn" id="zoomOut">−</button>
-        <button class="btn" id="zoomReset">100%</button>
-        <button class="btn" id="zoomIn">+</button>
-        <div class="sep"></div>
-        <button class="btn" id="reload">Recargar</button>
-        <button class="btn" id="openNew">Abrir</button>
-        <button class="btn primary" id="fullBtn">Pantalla completa</button>
+  <main class="main">
+    <div class="frame-wrap" id="frameWrap">
+      <!-- El iframe se crea dinámicamente para no bloquear el primer render -->
+      <div id="loader" class="loader">
+        <div class="loadcard">
+          <div class="spinner"></div>
+          <div>
+            <div class="loadtext" id="loadText">Preparando la aplicación…</div>
+            <div class="progress"><div class="bar" id="bar"></div></div>
+          </div>
+        </div>
+        <div class="help">
+          Si tarda demasiado, <a id="openLink2" href="#" target="_blank" rel="noopener">ábrela en una pestaña nueva</a>.
+        </div>
       </div>
     </div>
+  </main>
 
-    <div class="frame-viewport">
-      <div class="frame-scale" id="scaleWrap">
-        <!-- Pega la URL de tu webapp (…/exec) en APP_URL (en la Parte 2) -->
-        <iframe id="appFrame" title="App de Despachos" allow="clipboard-read; clipboard-write" 
-                sandbox="allow-scripts allow-forms allow-same-origin allow-popups allow-modals"></iframe>
-      </div>
-    </div>
-
-    <div class="footer">
-      <div>Aplicacion DESDI</div>
-      <div id="hint"/>
-    </div>
-  </div>
   <script>
-    // configuracion  
-    const APP_URL = 'https://script.google.com/macros/s/AKfycbyujdvCP6Mr2OXdi6yCnzkCTv-Hqq1er9Pgg-KB2U5VaybbncUJ6GQh-_SLNUyUYrfGPw/exec'; // <-- reemplaza
+    (function () {
+      const APP_URL = "https://script.google.com/macros/s/AKfycbxonoBulLQEYo7-K7ly_43VFVaLoGvH3KIzLFmDMv3CQhsClq2qOaLH9ALv5rFLnP2_/exec";
+      const frameWrap = document.getElementById('frameWrap');
+      const loader = document.getElementById('loader');
+      const loadText = document.getElementById('loadText');
+      const bar = document.getElementById('bar');
+      const btnReload = document.getElementById('btnReload');
+      const btnOpen = document.getElementById('btnOpen');
+      const openLink2 = document.getElementById('openLink2');
 
-    // ====== Estado del zoom (persistente) ======
-    const ZOOM_KEY   = 'shell_zoom_v1';
-    const ZOOM_MIN   = 0.80;
-    const ZOOM_MAX   = 1.60;
-    const ZOOM_STEP  = 0.10;
+      btnOpen.href = APP_URL;
+      openLink2.href = APP_URL;
 
-    const frame   = document.getElementById('appFrame');
-    const scaleEl = document.getElementById('scaleWrap');
-    const zoomLbl = document.getElementById('zoomLabel');
+      // Red lenta: sugerir abrir en pestaña
+      try {
+        if (navigator.connection && ['slow-2g','2g'].includes(navigator.connection.effectiveType)) {
+          loadText.textContent = "Conexión lenta detectada. Recomendado abrirla en una pestaña nueva.";
+        }
+      } catch (_) {}
 
-    function clamp(n, a, b){ return Math.max(a, Math.min(b, n)); }
-    function loadZoom(){ const v = parseFloat(localStorage.getItem(ZOOM_KEY)); return isNaN(v)?1:v; }
-    function saveZoom(v){ localStorage.setItem(ZOOM_KEY, String(v)); }
-    function setZoom(v){
-      v = clamp(v, ZOOM_MIN, ZOOM_MAX);
-      document.documentElement.style.setProperty('--scale', v);
-      zoomLbl.textContent = Math.round(v*100)+'%';
-      saveZoom(v);
-    }
+      // Progreso simulado mientras calientan conexiones
+      let p = 0; const tick = () => { p = Math.min(92, p + Math.random()*10 + 3); bar.style.width = p + '%'; };
+      const prog = setInterval(tick, 450);
 
-    // ====== UI botones ======
-    document.getElementById('zoomIn').onclick    = () => setZoom(loadZoom()+ZOOM_STEP);
-    document.getElementById('zoomOut').onclick   = () => setZoom(loadZoom()-ZOOM_STEP);
-    document.getElementById('zoomReset').onclick = () => setZoom(1);
+      let created = false;
+      function createIframe(forceReload=false){
+        if (created && !forceReload) return;
+        created = true;
+        const iframe = document.createElement('iframe');
+        iframe.title = "Planilla RUTA 700";
+        iframe.setAttribute('referrerpolicy', 'no-referrer-when-downgrade');
+        iframe.setAttribute('allow', 'web-share; clipboard-read; clipboard-write'); // delega permisos
+        iframe.setAttribute('sandbox', 'allow-forms allow-scripts allow-same-origin allow-popups allow-popups-to-escape-sandbox');
 
-    document.getElementById('reload').onclick = () => {
-      try { frame.contentWindow.location.reload(); }
-      catch { frame.src = APP_URL + (APP_URL.includes('?') ? '&' : '?') + 't=' + Date.now(); }
-    };
-    document.getElementById('openNew').onclick = () => window.open(APP_URL, '_blank');
+        // Cache-buster para ciertos navegadores móviles
+        const url = APP_URL + (APP_URL.includes('?') ? '&' : '?') + 't=' + Date.now();
+        iframe.src = url;
 
-    // Fullscreen
-    const shellEl = document.querySelector('.shell');
-    const fullBtn = document.getElementById('fullBtn');
-    function isFullscreen(){
-      return document.fullscreenElement || document.webkitFullscreenElement || document.msFullscreenElement;
-    }
-    function enterFS(){
-      (shellEl.requestFullscreen || shellEl.webkitRequestFullscreen || shellEl.msRequestFullscreen || shellEl.requestFullScreen).call(shellEl);
-    }
-    function exitFS(){
-      (document.exitFullscreen || document.webkitExitFullscreen || document.msExitFullscreen || document.cancelFullScreen).call(document);
-    }
-    fullBtn.onclick = () => { isFullscreen() ? exitFS() : enterFS(); };
+        // Oculta loader al cargar
+        iframe.addEventListener('load', () => {
+          clearInterval(prog);
+          bar.style.width = '100%';
+          setTimeout(()=> loader.classList.add('hidden'), 150);
+        });
 
-    document.addEventListener('fullscreenchange', () => {
-      fullBtn.textContent = isFullscreen() ? 'Salir de pantalla completa' : 'Pantalla completa';
-      fullBtn.classList.toggle('primary', !isFullscreen());
-    });
-
-    // ====== Carga inicial ======
-    function init(){
-      setZoom(loadZoom());
-      frame.src = APP_URL + (APP_URL.includes('?') ? '&' : '?') + 'embedded=1';
-      // Hint técnico (opcional)
-      const hint = document.getElementById('hint');
-      if (hint){
-        hint.textContent = `Viewport ${window.innerWidth}×${window.innerHeight}px — DPR ${window.devicePixelRatio || 1}`;
+        frameWrap.appendChild(iframe);
       }
-      // Ajuste iOS/Android 100vh: el contenedor ya usa flex; si se quiere, aquí podrías forzar altura.
-    }
-    document.addEventListener('DOMContentLoaded', init);
 
-    // ====== Atajos de teclado ======
-    document.addEventListener('keydown', (e)=>{
-      // Ctrl/Cmd + +/-
-      const mod = e.ctrlKey || e.metaKey;
-      if (mod && (e.key === '+' || e.key === '=')){ e.preventDefault(); setZoom(loadZoom()+ZOOM_STEP); }
-      if (mod && (e.key === '-' || e.key === '_')){ e.preventDefault(); setZoom(loadZoom()-ZOOM_STEP); }
-      if (mod && (e.key === '0')){ e.preventDefault(); setZoom(1); }
-      // f: fullscreen
-      if (!mod && (e.key.toLowerCase() === 'f')){ e.preventDefault(); fullBtn.click(); }
-      // r: recargar (cuando el foco no está dentro del iframe)
-      if (!mod && e.key.toLowerCase() === 'r' && document.activeElement !== frame){ e.preventDefault(); document.getElementById('reload').click(); }
-    });
+      // Crear iframe tras el primer idle o pequeña espera
+      if ('requestIdleCallback' in window) {
+        requestIdleCallback(() => createIframe(), { timeout: 1200 });
+      } else {
+        setTimeout(() => createIframe(), 300);
+      }
 
-    // ====== Recalcular indicadores cuando cambia la ventana (rotación móvil) ======
-    window.addEventListener('resize', ()=>{
-      const hint = document.getElementById('hint');
-      if (hint) hint.textContent = `Viewport ${window.innerWidth}×${window.innerHeight}px — DPR ${window.devicePixelRatio || 1}`;
-    });
+      // También ante primera interacción
+      ['click','keydown','touchstart'].forEach(ev => {
+        window.addEventListener(ev, () => createIframe(), { once: true, passive: true });
+      });
+
+      // Recargar: elimina y recrea
+      btnReload.addEventListener('click', () => {
+        loader.classList.remove('hidden');
+        loadText.textContent = "Recargando…";
+        bar.style.width = '0%'; p = 0;
+        const old = frameWrap.querySelector('iframe');
+        if (old) old.remove();
+        created = false;
+        createIframe(true);
+      });
+
+      // Fallback si tarda demasiado
+      setTimeout(() => {
+        if (!loader.classList.contains('hidden')) {
+          loadText.textContent = "Sigue cargando… Puedes abrirla en una pestaña para acelerar.";
+        }
+      }, 10000);
+    })();
   </script>
-
 </body>
 </html>
+
+
 
 
 
